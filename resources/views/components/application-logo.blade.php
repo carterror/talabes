@@ -1,0 +1,1 @@
+<img class="mb-4" src="{{ url('img/logo.png') }}" alt="">
