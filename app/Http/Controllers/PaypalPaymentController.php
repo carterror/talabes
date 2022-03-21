@@ -92,7 +92,7 @@ class PayPalPaymentController extends Controller
         // $token = $request->token;
         // $PayerID = $request->PayerID;
         // return $paymentId. " ". $token  . " ".$PayerID;
-        if (isset($_GET['success']) && $_GET['success'] == 'true') {
+        if (isset($request)) {
             // Get the payment Object by passing paymentId payment id was previously stored in session in CreatePaymentUsingPayPal.php
             
                 $paymentId = $_GET['paymentId'];
