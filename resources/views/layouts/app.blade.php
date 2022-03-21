@@ -13,7 +13,7 @@
         <meta name="copyright" content="egc-cuba.com" />
         <meta name="robots" content="index, follow">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
         <!-- Fonts -->
         {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
@@ -39,7 +39,8 @@
     @include('includes.navbar')
     @include('includes.sidebar')
 
-    <div class="container text-center">
+    <div>
+        @include('includes.validate')
         @section('content') 
         @show
     </div>
@@ -120,5 +121,6 @@
         <script src="{{ asset('assets/js/mixitup.min.js') }}" defer></script>
         <script src="{{ asset('assets/js/owl.carousel.min.js') }}" defer></script>
         <script src="{{ asset('assets/js/main.js') }}" defer></script>
+
     </body>
 </html>
