@@ -72,13 +72,24 @@ class PayPalPaymentController extends Controller
     {
 
     return "Cancelado";
+
+//     sb-kezh614538651@business.example.com
+// System Generated Password:
+// ak1F+CR&
+
+// sb-hjhd714538650@personal.example.com
+// System Generated Password:
+// DK8W-Aux
     
     }
 
     public function paymentSuccess(Request $request)
     {
 
-        return dd($request->all());
+        $paymentId = $request->paymentId;
+        $token = $request->token;
+        $PayerID = $request->PayerID;
+        return $paymentId. " ". $token  . " ".$PayerID;
         // if (isset($_GET['success']) && $_GET['success'] == 'true') {
         //     // Get the payment Object by passing paymentId payment id was previously stored in session in CreatePaymentUsingPayPal.php
             
