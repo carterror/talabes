@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Carbon\Exceptions\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -125,31 +127,31 @@ class PayPalPaymentController extends Controller
                     $result = $payment->execute($execution, $this->apiContext);
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
             
-                    ResultPrinter::printResult("Executed Payment", "Payment", $payment->getId(), $execution, $result);
+                    return "Executed Payment Payment"."<br>". $payment->getId()."<br>". $execution."<br>". $result;
             
                     try {
                         $payment = Payment::get($paymentId, $this->apiContext);
                     } catch (Exception $ex) {
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
             
-                        ResultPrinter::printError("Get Payment", "Payment", null, null, $ex);
+                        return "Get Payment ". " Payment"."<br>". $ex;
                         exit(1);
                     }
                 } catch (Exception $ex) {
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
             
-                    ResultPrinter::printError("Executed Payment", "Payment", null, null, $ex);
+                    return "Executed Payment ". " Payment"."<br>". $ex;
                     exit(1);
                 }
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
             
-                ResultPrinter::printResult("Get Payment", "Payment", $payment->getId(), null, $payment);
+                return "Get Payment ". " Payment"."<br>". $payment->getId()."<br>". $payment;
             
                 return $payment;
             } else {
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
             
-                ResultPrinter::printResult("User Cancelled the Approval", null);
+                return "User Cancelled the Approval";
                 exit;
             }
     }
