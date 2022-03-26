@@ -51,13 +51,13 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="{{request()->routeIs('todo') ? 'active' : ''}}"><a href="./index.html">Inicio</a></li>
-                            <li><a href="./shop-grid.html">Tienda</a></li>
+                            <li class="{{request()->routeIs('todo') ? 'active' : ''}}"><a href="{{ route('todo') }}">Inicio</a></li>
+                            <li class="{{request()->routeIs('shops.*') ? 'active' : ''}}"><a href="{{ route('shops.index') }}">Tienda</a></li>
                             <li class="{{request()->routeIs('products.*') ? 'active' : ''}}"><a href="#">Otros</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="{{ route('products.index') }}">Productos</a></li>
-                                    <li><a href="./shoping-cart.html">Carrito de compras</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="{{route('carrito.index')}}">Carrito de compras</a></li>
+                                    <li><a href=".{{route('orders.index')}}">Ordenes</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>

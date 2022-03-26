@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('handle-payment', [PayPalPaymentController::class, 'handlePayment'])->name('make.payment');
+Route::get('handle-payment/{id}', [PayPalPaymentController::class, 'handlePayment'])->name('make.payment');
 Route::get('cancel-payment', [PayPalPaymentController::class, 'paymentCancel'])->name('cancel.payment');
 Route::get('payment-success', [PayPalPaymentController::class, 'paymentSuccess'])->name('success.payment');

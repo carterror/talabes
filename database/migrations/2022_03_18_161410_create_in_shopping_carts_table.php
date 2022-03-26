@@ -24,6 +24,8 @@ class CreateInShoppingCartsTable extends Migration
 
             $table->foreign("shopping_cart_id")->references("id")->on("shopping_carts");
 
+            $table->integer("cantidad")->default(1);
+
             $table->timestamps();
         });
     }

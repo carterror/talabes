@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\ShoppingCart;
 use Carbon\Exceptions\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-
+use Illuminate\Support\Facades\Session;
 use \PayPal\Api\Amount;
 use \PayPal\Api\Details;
 use \PayPal\Api\Payment;
@@ -16,7 +18,7 @@ use \PayPal\Api\Transaction;
 class PayPalPaymentController extends Controller
 {
 
-    private $apiContext;
+    private $apiContext, $shoppingcart;
 
     public function __construct()
     {
@@ -25,21 +27,25 @@ class PayPalPaymentController extends Controller
         
         $this->apiContext = new \PayPal\Rest\ApiContext(
             new \PayPal\Auth\OAuthTokenCredential(
-                $paypalconfig["sandbox"]["certificate"],                   // ClientID
+                $paypalconfig["sandbox"]["certificate"], // ClientID
                 $paypalconfig["sandbox"]["secret"]      // ClientSecret
             )
         );
+
     }
 
-    public function handlePayment()
+    public function handlePayment($shoppingcart)
     {
+
+        $this->shoppingcart = $shoppingcart;
+
         // 3. Lets try to create a Payment
         // https://developer.paypal.com/docs/api/payments/#payment_create
         $payer = new \PayPal\Api\Payer();
         $payer->setPaymentMethod('paypal');
 
         $amount = new \PayPal\Api\Amount();
-        $amount->setTotal('1.00');
+        $amount->setTotal($this->shoppingcart->total());
         $amount->setCurrency('USD');
 
         $transaction = new \PayPal\Api\Transaction();
@@ -95,13 +101,13 @@ class PayPalPaymentController extends Controller
         if (isset($request)) {
             // Get the payment Object by passing paymentId payment id was previously stored in session in CreatePaymentUsingPayPal.php
             
-                $paymentId = $_GET['paymentId'];
+                $paymentId = $request->paymentId;
                 $payment = Payment::get($paymentId, $this->apiContext);
             // Payment Execute
             // PaymentExecution object includes information necessary to execute a PayPal account payment. The payer_id is added to the request query parameters when the user is redirected from paypal back to your site
-            
+            dd($payment);
                 $execution = new PaymentExecution();
-                $execution->setPayerId($_GET['PayerID']);
+                $execution->setPayerId($request->PayerID);
             // Optional Changes to Amount
             // If you wish to update the amount that you wish to charge the customer, based on the shipping address or any other reason, you could do that by passing the transaction object with just amount field in it. Here is the example on how we changed the shipping to $1 more than before.
             
@@ -111,10 +117,10 @@ class PayPalPaymentController extends Controller
             
                 $details->setShipping(2.2)
                     ->setTax(1.3)
-                    ->setSubtotal(17.50);
+                    ->setSubtotal($this->shoppingcart->total());
             
                 $amount->setCurrency('USD');
-                $amount->setTotal(21);
+                $amount->setTotal($this->shoppingcart->total());
                 $amount->setDetails($details);
                 $transaction->setAmount($amount);
             // Add the above transaction object inside our Execution object.
@@ -126,9 +132,12 @@ class PayPalPaymentController extends Controller
             
                     $result = $payment->execute($execution, $this->apiContext);
             // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
-            
-                    return "Executed Payment Payment"."<br>". $payment->getId()."<br>". $execution."<br>". $result;
-            
+                    
+                    // return "Executed Payment Payment"."<br>". $payment->getId()."<br>". $execution."<br>". $result;
+                    $order = Order::createFromPayPalResponse(True, $result, $this->shoppingcart);
+                    
+                    dd($order);
+
                     try {
                         $payment = Payment::get($paymentId, $this->apiContext);
                     } catch (Exception $ex) {

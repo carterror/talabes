@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+use function PHPUnit\Framework\returnSelf;
 
 class OrderController extends Controller
 {
@@ -14,8 +18,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $shopping_cart_id = Session::get('shopping_cart_id');
+
+        $shopping_cart = ShoppingCart::findOrCreateSessionID($shopping_cart_id);
+
+        $shopping_cart->approve();
+
+        // return redirect()->route('orders.show', $shopping_cart->customid);
+
+        Session::remove('shopping_cart_id');
+
+        return redirect()->route('orders.show', $shopping_cart->customid);
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +49,35 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $shoppingcart = ShoppingCart::find($request->carrito);
+
+        if ($shoppingcart->status == "Aprovado") {
+            if ($request->paypal) {
+                return redirect()->route('make.payment', $shoppingcart);
+            } else {
+
+                $request->validate([
+                    'recipient_name1' => 'required',
+                    'recipient_name2' => 'required',
+                    'line1' => 'required',
+                    'phone' => 'required|numeric',
+                    'email' => 'required|email',
+                    'state' => 'required',
+                ]);
+
+                $request['recipient_name'] = $request->recipient_name1." ".$request->recipient_name2;
+                $order = Order::createFromPayPalResponse(False, $request->except(['_token','recipient_name1', 'recipient_name2']), $shoppingcart);
+                    
+                return back()->with("icon", "fa-check")->with("message", "Pago realizado con exito")->with("typealert", "success");
+
+            }
+        } else {
+            return back()->with("icon", "fa-exclamation-triangle")->with("message", "Su orden no ha sido aprovada")->with("typealert", "danger");
+        }
+        
+
+        
+        return "nada";
     }
 
     /**
@@ -44,9 +86,15 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show($customid)
     {
-        //
+        $order = ShoppingCart::where("customid", $customid)->first();
+
+        $products = $order->products()->get();
+        $total = $order->total();
+
+        // return $products;
+        return view("orders.index", compact("order", "products", "total"));
     }
 
     /**

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\InShoppingCartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Models\ShoppingCart;
 use Illuminate\Support\Facades\Session;
@@ -25,6 +27,9 @@ Route::get('/', function () {
 })->name("todo");
 
 Route::resource('products', ProductController::class);
+Route::resource('orders', OrderController::class);
+Route::resource('shops', ShopController::class);
+
 Route::resource('in_shopping_carts', InShoppingCartController::class)->only(['store', 'destroy']);
 
 Route::get('/carrito', [ShoppingCartController::class , 'index'])->name('carrito.index');

@@ -6,7 +6,7 @@ Carrito de compras
 
 @section('content')
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="{{ asset('assets/img/breadcrumb.jpg')}} ">
   <div class="container">
       <div class="row">
           <div class="col-lg-12 text-center">
@@ -33,9 +33,9 @@ Carrito de compras
                   <table>
                       <thead>
                           <tr>
-                              <th class="shoping__product">Products</th>
-                              <th>Price</th>
-                              <th>Quantity</th>
+                              <th class="shoping__product">Productos</th>
+                              <th>Precio</th>
+                              <th>Canttidad</th>
                               <th>Total</th>
                               <th></th>
                           </tr>
@@ -53,7 +53,7 @@ Carrito de compras
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" value="1">
+                                        <input type="text" value="{{$item->cantidad}}">
                                     </div>
                                 </div>
                             </td>
@@ -74,9 +74,9 @@ Carrito de compras
       <div class="row">
           <div class="col-lg-12">
               <div class="shoping__cart__btns">
-                  <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                  <a href="{{route('products.index')}}" class="primary-btn cart-btn">CONTINUAR COMPRANDO</a>
                   <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                      Upadate Cart</a>
+                     ACTUALIZAR CARRITO</a>
               </div>
           </div>
           {{-- <div class="col-lg-6">
@@ -97,7 +97,8 @@ Carrito de compras
                       <li>Subtotal <span>$ {{$total}}</span></li>
                       <li>Total <span>$ {{$total}}</span></li>
                   </ul>
-                  <a href="{{ route('make.payment') }}" class="primary-btn">Chekear Pago</a>
+                  <a href="{{route('orders.index')}}" class="primary-btn">CHEQUEAR COMPRA</a>
+
               </div>
           </div>
       </div>

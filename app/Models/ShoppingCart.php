@@ -10,12 +10,42 @@ class ShoppingCart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'status',
+        'status', "customid",
     ];
+
+
+    public function approve()
+    {
+        $this->updateCustomIdApprove();
+    }
+
+
+    public function generateCustomId()
+    {
+        return md5("$this->id $this->updated_at");
+    }
+
+    public function updateCustomIdApprove()
+    {
+        $this->status = "En proceso";
+        $this->customid = $this->generateCustomId();
+        $this->save();
+    }
+
+    public function updateCustomId()
+    {
+        $this->customid = $this->generateCustomId();
+        $this->save();
+    }
 
     public function inShoppingCarts()
     {
         return $this->hasMany(InShoppingCart::class);
+    }
+
+    public function order()
+    {
+        return $this->hasOne(Order::class)->first();
     }
 
     public function products()
@@ -30,7 +60,15 @@ class ShoppingCart extends Model
 
     public function total()
     {
-        return $this->products()->sum("pricing");
+        $r = $this->products()->get();
+        $s=0;
+        foreach ($r as $buy){
+
+            $s += $buy->pricing * InShoppingCart::where('shopping_cart_id', $buy->pivot->shopping_cart_id)->where('product_id', $buy->pivot->product_id)->first()->cantidad;
+        
+        }
+
+        return $s;
     }
 
     public static function findOrCreateSessionID ($shopping_cart_id) {

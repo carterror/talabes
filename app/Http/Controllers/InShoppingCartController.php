@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class InShoppingCartController extends Controller
 {
+    
 
     /**
      * Store a newly created resource in storage.
@@ -24,7 +25,8 @@ class InShoppingCartController extends Controller
     
         $response = InShoppingCart::create([
             "shopping_cart_id" => $shopping_cart->id,
-            "product_id" => $request->product_id
+            "product_id" => $request->product_id,
+            "cantidad" => $request->cantidad
         ]);
 
         if($response):
