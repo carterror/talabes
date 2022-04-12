@@ -22,15 +22,28 @@ class InShoppingCartController extends Controller
         $shopping_cart_id = Session::get('shopping_cart_id');
 
         $shopping_cart = ShoppingCart::findOrCreateSessionID($shopping_cart_id);
-    
-        $response = InShoppingCart::create([
-            "shopping_cart_id" => $shopping_cart->id,
-            "product_id" => $request->product_id,
-            "cantidad" => $request->cantidad
-        ]);
+        
+        $cart = InShoppingCart::where('shopping_cart_id', $shopping_cart_id)->where('product_id', $request->product_id);
+  
+        if (!$cart->count()) {
+
+            $response = InShoppingCart::create([
+                "shopping_cart_id" => $shopping_cart->id,
+                "product_id" => $request->product_id,
+                "cantidad" => $request->cantidad
+            ]);
+            
+        } else {
+
+            $carrito = $cart->first();
+            $carrito->cantidad += $request->cantidad;
+
+            $response = $carrito->update();
+
+        }
 
         if($response):
-            return redirect()->route("carrito.index")->with("icon", "fa-check")->with("message", "Producto creado con éxito!")->with("typealert", "success");
+            return redirect()->route("carrito.index")->with("icon", "fa-check")->with("message", "Producto agregado con éxito!")->with("typealert", "success");
         else:
             return back()->with("icon", "fa-exclamation-triangle")->with("message", "No fue completado")->with("typealert", "danger");
         endif;

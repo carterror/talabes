@@ -11,10 +11,10 @@ Carrito de compras
       <div class="row">
           <div class="col-lg-12 text-center">
               <div class="breadcrumb__text">
-                  <h2>Shopping Cart</h2>
+                  <h2>Carrito de compras</h2>
                   <div class="breadcrumb__option">
-                      <a href="./index.html">Home</a>
-                      <span>Shopping Cart</span>
+                      <a href="{{route('todo')}}">Inicio</a>
+                      <span>Carrito</span>
                   </div>
               </div>
           </div>
@@ -52,13 +52,13 @@ Carrito de compras
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="{{$item->cantidad}}">
+                                    <div class="pro-qty" data-id="{{$item->cantidad()->id}}">
+                                        <input type="text" value="{{$item->cantidad()->cantidad}}">
                                     </div>
                                 </div>
                             </td>
                             <td class="shoping__cart__total">
-                                $110.00
+                                $ {{$item->pricing*$item->cantidad()->cantidad}}
                             </td>
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close"></span>
@@ -74,8 +74,8 @@ Carrito de compras
       <div class="row">
           <div class="col-lg-12">
               <div class="shoping__cart__btns">
-                  <a href="{{route('products.index')}}" class="primary-btn cart-btn">CONTINUAR COMPRANDO</a>
-                  <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                  <a href="{{route('shops.index')}}" class="primary-btn cart-btn">CONTINUAR COMPRANDO</a>
+                  <a href="{{route('carrito.index')}}" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
                      ACTUALIZAR CARRITO</a>
               </div>
           </div>

@@ -14,6 +14,14 @@ class Product extends Model
         'description',
         'pricing',
         'user_id',
+        'photo',
+        'moneda',
     ];
+
+    public function cantidad()
+    {
+        $cantidad = InShoppingCart::where('product_id', $this->pivot->product_id)->where('shopping_cart_id', $this->pivot->shopping_cart_id)->first();
+        return $cantidad;
+    } 
 
 }

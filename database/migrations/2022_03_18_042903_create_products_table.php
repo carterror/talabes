@@ -19,6 +19,9 @@ class CreateProductsTable extends Migration
             $table->integer("user_id")->unsigned()->index();
             $table->string("title");
             $table->text("description");
+            $table->text("photo");
+            $table->string("moneda");
+            
             $table->decimal("pricing", 9, 2);
             
             $table->timestamps();

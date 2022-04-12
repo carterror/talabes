@@ -12,11 +12,10 @@ Productos
       <div class="row">
           <div class="col-lg-12 text-center">
               <div class="breadcrumb__text">
-                  <h2>Vegetable’s Package</h2>
+                  <h2>{{$product->title}}</h2>
                   <div class="breadcrumb__option">
-                      <a href="./index.html">Home</a>
-                      <a href="./index.html">Vegetables</a>
-                      <span>Vegetable’s Package</span>
+                    <a href="{{route('todo')}}">Inicio</a>
+                    <span>Producto</span>
                   </div>
               </div>
           </div>
@@ -33,7 +32,7 @@ Productos
               <div class="product__details__pic">
                   <div class="product__details__pic__item">
                       <img class="product__details__pic__item--large"
-                          src="{{url('assets/img/product/details/product-details-1.jpg')}}" alt="">
+                          src="{{$product->photo}}" alt="">
                   </div>
                   <div class="product__details__pic__slider owl-carousel">
                       <img data-imgbigurl="img/product/details/product-details-2.jpg"
@@ -64,17 +63,9 @@ Productos
                   @include('includes.form')
                   <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                   <ul>
-                      <li><b>Availability</b> <span>In Stock</span></li>
+                      <li><b>Monedas</b> <span>MLC</span></li>
                       <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                      <li><b>Weight</b> <span>0.5 kg</span></li>
-                      <li><b>Share on</b>
-                          <div class="share">
-                              <a href="#"><i class="fa fa-facebook"></i></a>
-                              <a href="#"><i class="fa fa-twitter"></i></a>
-                              <a href="#"><i class="fa fa-instagram"></i></a>
-                              <a href="#"><i class="fa fa-pinterest"></i></a>
-                          </div>
-                      </li>
+                      <li><b>Peso</b> <span>0.5 kg</span></li>
                   </ul>
               </div>
           </div>
@@ -89,19 +80,29 @@ Productos
       <div class="row">
           <div class="col-lg-12">
               <div class="section-title related__product__title">
-                  <h2>Related Product</h2>
+                  <h2>Otros Productos</h2>
               </div>
           </div>
       </div>
       <div class="row">
         @foreach ($products as $item)
+        @if ($product->id != $item->id)
           <div class="col-lg-3 col-md-4 col-sm-6">
               <div class="product__item">
-                  <div class="product__item__pic set-bg" data-setbg="{{url('assets/img/product/product-1.jpg')}}">
+                  <div class="product__item__pic set-bg" data-setbg="{{$item->photo}}">
                       <ul class="product__item__pic__hover">
-                          <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                          <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                          <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li><a href="{{route('products.show',$item->id)}}"><i class="fa fa-eye"></i></a></li>
+                        <li>
+                            <form action="{{ route('in_shopping_carts.store' )}}" method="post" id="pedir{{$item->id}}">
+                                @csrf
+
+                                <input type="hidden" name="cantidad" value="1">
+      
+                                <input type="hidden" name="product_id" value="{{$item->id}}">
+                                <a href="#" onclick="event.preventDefault();
+                                document.getElementById('pedir{{$item->id}}').submit();"><i class="fa fa-shopping-cart"></i></a>
+                            </form>
+                        </li>
                       </ul>
                   </div>
                   <div class="product__item__text">
@@ -110,6 +111,7 @@ Productos
                   </div>
               </div>
           </div>
+        @endif
         @endforeach
       </div>
   </div>

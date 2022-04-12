@@ -61,6 +61,7 @@
                         </ul>
                     </div>
                 </div>
+                <a href="" style="background-color: red; padding: 5px;"></a>
                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
                         <h6>Useful Links</h6>

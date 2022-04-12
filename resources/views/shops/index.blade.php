@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Carrito de compras
+Tienda
 @endsection
 
 @section('content')
@@ -30,14 +30,14 @@ Carrito de compras
             <div class="col-lg-3 col-md-5">
                 <div class="sidebar">
                     <div class="sidebar__item">
-                        <h4>Department</h4>
+                        <h4>Categoría</h4>
                         <ul>
                             <li><a href="#">Fresh Meat</a></li>
 
                         </ul>
                     </div>
                     <div class="sidebar__item">
-                        <h4>Price</h4>
+                        <h4>Precio</h4>
                         <div class="price-range-wrap">
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
                                 data-min="10" data-max="540">
@@ -54,7 +54,7 @@ Carrito de compras
                         </div>
                     </div>
                     <div class="sidebar__item sidebar__item__color--option">
-                        <h4>Colors</h4>
+                        <h4>Color</h4>
                         <div class="sidebar__item__color sidebar__item__color--white">
                             <label for="white">
                                 White
@@ -93,7 +93,7 @@ Carrito de compras
                         </div>
                     </div>
                     <div class="sidebar__item">
-                        <h4>Popular Size</h4>
+                        <h4>Tamaño</h4>
                         <div class="sidebar__item__size">
                             <label for="large">
                                 Large
@@ -119,7 +119,7 @@ Carrito de compras
                             </label>
                         </div>
                     </div>
-                    <div class="sidebar__item">
+                    {{-- <div class="sidebar__item">
                         <div class="latest-product__text">
                             <h4>Latest Products</h4>
                             <div class="latest-product__slider owl-carousel">
@@ -183,7 +183,7 @@ Carrito de compras
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -308,11 +308,11 @@ Carrito de compras
                     <div class="row">
                         <div class="col-lg-4 col-md-5">
                             <div class="filter__sort">
-                                <span>Sort By</span>
-                                <select>
+                                <span>Orden</span>
+                                {{-- <select>
                                     <option value="0">Default</option>
                                     <option value="0">Default</option>
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4">
@@ -328,20 +328,31 @@ Carrito de compras
                         </div>
                     </div>
                 </div>
+                
                 <div class="row">
+                    
                     @foreach ($products as $item)
-
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="{{url('assets/img/product/product-1.jpg')}}">
+                            <div class="product__item__pic set-bg" data-setbg="{{$item->photo}}">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li><a href="{{route('products.show',$item->id)}}"><i class="fa fa-eye"></i></a></li>
+                                    <li>
+                                        <form action="{{ route('in_shopping_carts.store' )}}" method="post" id="pedir{{$item->id}}">
+                                            @csrf
+
+                                            <input type="hidden" name="cantidad" value="1">
+                  
+                                            <input type="hidden" name="product_id" value="{{$item->id}}">
+                                            <a href="#" onclick="event.preventDefault();
+                                            document.getElementById('pedir{{$item->id}}').submit();"><i class="fa fa-shopping-cart"></i></a>
+                                        </form>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6><a href="#">{{$item->title}}</a></h6>
+                                <h6><a href="{{route('products.show',$item->id)}}">{{$item->title}}</a></h6>
                                 <h5>${{$item->pricing}}</h5>
                             </div>
                         </div>

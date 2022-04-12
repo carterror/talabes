@@ -135,11 +135,11 @@ Carrito de compras
                                 </label>
                             </div> --}}
                             
-                                <h3 style="color: red;">IMPORTANTE</h3>
+                                {{-- <h3 style="color: red;">IMPORTANTE</h3>
                                 <p style="color: red;">
                                 Contamos con dos formas de pago mediante PayPal, o mediante nuestros agentes en Cuba.
                                 Si desea pagar con su cuenta PayPal marque el siguiente cuadro.
-                            </p>
+                            </p> --}}
                             {{-- <div class="checkout__input__checkbox">
                                 <label for="payment">
                                     Check Payment
@@ -147,13 +147,14 @@ Carrito de compras
                                     <span class="checkmark"></span>
                                 </label>
                             </div> --}}
-                            <div class="checkout__input__checkbox">
+                            
+                            {{-- <div class="checkout__input__checkbox">
                                 <label for="paypal">
                                     Paypal
                                     <input type="checkbox" id="paypal" name="paypal">
                                     <span class="checkmark"></span>
                                 </label>
-                            </div>
+                            </div> --}}
                             <button type="submit" class="site-btn">Encargar</button>
 
                         </div>

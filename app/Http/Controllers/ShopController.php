@@ -15,7 +15,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(1);
+        $products = Product::paginate(10);
         $cantidad = Product::all()->count();
         return view("shops.index", compact("products", "cantidad"));
     }

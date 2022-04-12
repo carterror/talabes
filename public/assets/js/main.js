@@ -203,6 +203,7 @@
     /*-------------------
 		Quantity change
 	--------------------- */
+    var base = location.protocol + '//' + location.host;
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
@@ -211,10 +212,12 @@
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
             var newVal = parseFloat(oldValue) + 1;
+            window.location.href = base+"/"+proQty.attr('data-id')+"/item/1";
         } else {
             // Don't allow decrementing below zero
             if (oldValue > 0) {
                 var newVal = parseFloat(oldValue) - 1;
+                window.location.href = base+"/"+proQty.attr('data-id')+"/item/-1";
             } else {
                 newVal = 0;
             }

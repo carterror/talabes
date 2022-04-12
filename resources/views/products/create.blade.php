@@ -26,6 +26,11 @@ Productos
             <small id="title" class="form-text text-muted">Nombre del producto</small>
           </div>
           <div class="form-group">
+            <label for="title">Foto</label>
+            <input type="text" class="form-control" id="photo" value="{{old('photo')}}" name="photo" aria-describedby="title">
+            <small id="title" class="form-text text-muted">Dirección de la foto</small>
+          </div>
+          <div class="form-group">
             <label for="pricing">Precio</label>
             <input type="number" class="form-control" id="pricing" value="{{old('pricing')}}" name="pricing" aria-describedby="precing">
           </div>
@@ -35,8 +40,11 @@ Productos
 
           </div>
           <div class="form-group">
-            <input type="checkbox" class="form-check-input" id="public" name="public">
+            <input type="checkbox" class="form-check-input" id="public" name="public" checked>
             <label class="form-check-label" for="public">Público</label>
+            <br>
+            <input type="checkbox" class="form-check-input" id="cup" name="cup">
+            <label class="form-check-label" for="cup">CUP</label>
           </div>
         </form>
       </div>

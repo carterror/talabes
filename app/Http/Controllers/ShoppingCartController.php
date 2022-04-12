@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InShoppingCart;
 use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -19,7 +20,7 @@ class ShoppingCartController extends Controller
 
         $shopping_cart = ShoppingCart::findOrCreateSessionID($shopping_cart_id);
 
-        $products = $shopping_cart->products()->get();
+         $products = $shopping_cart->products()->get();
 
         $total = $shopping_cart->total();
 
@@ -91,5 +92,22 @@ class ShoppingCartController extends Controller
     public function destroy(ShoppingCart $shoppingCart)
     {
         //
+    }
+
+    public function item($id, $o)
+    {
+        $in = InShoppingCart::find($id);
+        if ($o > 0) {
+            $in->cantidad += 1;
+            $msg="Agregado";
+        } else {
+            $in->cantidad -= 1;
+            $msg="Eliminado";
+        }
+        
+        if ($in->update()) {
+            return back()->with("icon", "fa-check")->with("message", $msg." con éxito!")->with("typealert", "success");
+        }
+        
     }
 }

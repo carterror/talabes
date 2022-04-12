@@ -6,8 +6,7 @@ use App\Models\Order;
 use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
-use function PHPUnit\Framework\returnSelf;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class OrderController extends Controller
 {
@@ -25,6 +24,15 @@ class OrderController extends Controller
         $shopping_cart->approve();
 
         // return redirect()->route('orders.show', $shopping_cart->customid);
+        $text = '<b>        Detalles de la orden
+        ID: <a href="'.route("orders.edit", $shopping_cart_id).'" style="background-color: red; padding: 5px;">'.$shopping_cart_id.'</a>
+        </b>';
+
+        Telegram::sendMessage([
+            'chat_id' => config('telegram.bots.mybot.channel'),
+            'parse_mode' => 'HTML',
+            'text' => $text,
+        ]);
 
         Session::remove('shopping_cart_id');
 
@@ -103,9 +111,13 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit($id)
     {
-        //
+        $carrito = ShoppingCart::with(['products'])->find($id);
+        $products = $carrito->products;
+
+        return view("orders.show", compact("products"));
+
     }
 
     /**
